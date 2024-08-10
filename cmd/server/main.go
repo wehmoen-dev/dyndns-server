@@ -25,7 +25,7 @@ var projectID string
 var dynDNSService dns.DynDNSService
 
 func init() {
-	flag.StringVar(&bindAddress, "bind-address", utils.OsEnv("DYNDNS_BIND_ADDRESS", "127.0.0.1:8080"), "Bind address for the server")
+	flag.StringVar(&bindAddress, "bind-address", utils.OsEnv("DYNDNS_BIND_ADDRESS", ":8080"), "Bind address for the server")
 	flag.StringVar(&auth, "auth", os.Getenv("DYNDNS_AUTH"), "Basic Auth username:password")
 	flag.StringVar(&authFile, "auth-file", utils.OsEnv("DYNDNS_AUTH_FILE", "google.json"), "Path to file containing the Google Cloud credentials")
 	flag.StringVar(&dnsZoneName, "dns-zone-name", os.Getenv("DYNDNS_DNS_ZONE_NAME"), "DNS zone name")

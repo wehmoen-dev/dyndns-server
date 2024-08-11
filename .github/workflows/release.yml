@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -33,8 +33,12 @@ jobs:
           UPDATED_BODY="${RELEASE_BODY}\n\nAdd a pull command for the dyndns-server via reg.wehmoen.dev/github/dyndns-server:${RELEASE_TAG}"
           echo -e "$UPDATED_BODY" > updated_description.txt
           gh release edit "$RELEASE_TAG" --notes-file updated_description.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload dist files to release
         run: |
           gh release upload "${{ github.ref_name }}" ./dist/*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         

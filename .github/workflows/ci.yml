@@ -105,6 +105,7 @@ jobs:
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --tag $IMAGE_NAME:latest \
                 --push .
+                docker pull $IMAGE_NAME:latest
               ;;
             release)
               docker buildx build \
@@ -113,6 +114,7 @@ jobs:
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --tag $IMAGE_NAME:${{ github.event.release.tag_name }} \
                 --push .
+                docker pull $IMAGE_NAME:${{ github.event.release.tag_name }}
               ;;
             pull_request)
               PR_ID=${{ github.event.pull_request.number }}
@@ -121,6 +123,7 @@ jobs:
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --tag $IMAGE_NAME:pr-$PR_ID \
                 --push .
+              docker pull $IMAGE_NAME:pr-$PR_ID
               ;;
           esac
 

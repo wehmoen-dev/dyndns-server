@@ -118,12 +118,10 @@ jobs:
               ;;
             pull_request)
               PR_ID=${{ github.event.pull_request.number }}
-              docker buildx build \
-                --platform linux/amd64 \
+              docker build \
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --tag $IMAGE_NAME:pr-$PR_ID \
-                --push .
-              docker pull $IMAGE_NAME:pr-$PR_ID
+                .              
               ;;
           esac
 

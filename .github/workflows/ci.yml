@@ -141,6 +141,8 @@ jobs:
               ;;
           esac
           
+          echo "TRIGGERED BY: ${{ github.event_name }}"
+          
           echo $(docker buildx imagetools inspect $IMAGE_NAME)
           
           echo "Using IMAGE_NAME=${IMAGE_NAME}"

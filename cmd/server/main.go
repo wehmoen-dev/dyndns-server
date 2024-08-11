@@ -139,47 +139,47 @@ func main() {
 			}
 
 			if parsed.IsLoopback() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Loopback IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Loopback IP address")
 				result.V4.Error = errors.New("loopback IP address")
 			}
 
 			if parsed.IsUnspecified() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Unspecified IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Unspecified IP address")
 				result.V4.Error = errors.New("unspecified IP address")
 			}
 
 			if parsed.IsMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Multicast IP address")
 				result.V4.Error = errors.New("multicast IP address")
 			}
 
 			if parsed.IsLinkLocalUnicast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Link-local unicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Link-local unicast IP address")
 				result.V4.Error = errors.New("link-local unicast IP address")
 			}
 
 			if parsed.IsPrivate() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Private IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Private IP address")
 				result.V4.Error = errors.New("private IP address")
 			}
 
 			if parsed.IsInterfaceLocalMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Interface-local multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Interface-local multicast IP address")
 				result.V4.Error = errors.New("interface-local multicast IP address")
 			}
 
 			if parsed.IsLinkLocalMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Link-local multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Link-local multicast IP address")
 				result.V4.Error = errors.New("link-local multicast IP address")
 			}
 
 			if parsed.To4() == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "IPv6 address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "IPv6 address")
 				result.V4.Error = errors.New("IPv6 address")
 			}
 
 			if isReservedOrUnroutableIP(parsed) && result.V4.Error == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Reserved or unroutable IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Reserved or unroutable IP address")
 				result.V4.Error = errors.New("reserved or unroutable IP address")
 			}
 		} else {
@@ -195,47 +195,47 @@ func main() {
 			}
 
 			if parsed.IsLoopback() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Loopback IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Loopback IP address")
 				result.V6.Error = errors.New("loopback IP address")
 			}
 
 			if parsed.IsUnspecified() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Unspecified IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Unspecified IP address")
 				result.V6.Error = errors.New("unspecified IP address")
 			}
 
 			if parsed.IsMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Multicast IP address")
 				result.V6.Error = errors.New("multicast IP address")
 			}
 
 			if parsed.IsLinkLocalUnicast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Link-local unicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Link-local unicast IP address")
 				result.V6.Error = errors.New("link-local unicast IP address")
 			}
 
 			if parsed.IsPrivate() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Private IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Private IP address")
 				result.V6.Error = errors.New("private IP address")
 			}
 
 			if parsed.IsInterfaceLocalMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Interface-local multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Interface-local multicast IP address")
 				result.V6.Error = errors.New("interface-local multicast IP address")
 			}
 
 			if parsed.IsLinkLocalMulticast() {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Link-local multicast IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Link-local multicast IP address")
 				result.V6.Error = errors.New("link-local multicast IP address")
 			}
 
 			if parsed.To16() == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "IPv4 address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "IPv4 address")
 				result.V6.Error = errors.New("IPv4 address")
 			}
 
 			if isReservedOrUnroutableIP(parsed) && result.V6.Error == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Reserved or unroutable IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), parsed.String(), "Reserved or unroutable IP address")
 				result.V6.Error = errors.New("reserved or unroutable IP address")
 			}
 		}

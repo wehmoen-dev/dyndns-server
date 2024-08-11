@@ -141,7 +141,9 @@ jobs:
               ;;
           esac
           
-          echo "Using IMAGE_TAG=${IMAGE_TAG}"
+          echo $(docker buildx imagetools inspect $IMAGE_NAME)
+          
+          echo "Using IMAGE_NAME=${IMAGE_NAME}"
           echo "Computed DIGEST=${DIGEST}"
 
           cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST

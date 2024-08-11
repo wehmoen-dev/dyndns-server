@@ -141,7 +141,7 @@ jobs:
               ;;
           esac
 
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME:$DIGEST
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
 
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

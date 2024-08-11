@@ -26,7 +26,7 @@ func (c *caller) Call(host string, v4Address *net.IP, v6Address *net.IP, auth ..
 		if len(credentials) == 2 {
 			c.client.SetBasicAuth(credentials[0], credentials[1])
 		} else {
-			log.Printf("[DynDNS Client] Could not parse credentials into username and password. Format should be username:password but received: %q", auth[0])
+			log.Printf("[DynDNS Client] Could not parse credentials into username and password. Format should be username:password.")
 		}
 	}
 

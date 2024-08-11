@@ -144,3 +144,13 @@ jobs:
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+
+      - name: Post comment on PR with image pull command
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          PR_ID=${{ github.event.pull_request.number }}
+          IMAGE_NAME=reg.wehmoen.dev/github/dyndns-server
+          WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh pr comment $PR_ID --body "New Docker image pushed. Pull via \`docker pull $IMAGE_NAME:${{ github.sha }}\`. [View workflow run]($WORKFLOW_URL)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

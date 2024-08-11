@@ -2,6 +2,8 @@ module dyndns
 
 go 1.22
 
+toolchain go1.22.1
+
 require (
 	github.com/go-resty/resty/v2 v2.14.0
 	github.com/jedib0t/go-pretty/v6 v6.5.9

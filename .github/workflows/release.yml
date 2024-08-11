@@ -1,0 +1,36 @@
+name: Release Pipeline
+
+on:
+  release:
+    types: [unpublished]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build project
+        run: make all
+
+      - name: Update release description with gh
+        run: |
+          RELEASE_TAG=${{ github.ref_name }}
+          RELEASE_BODY=$(gh release view "$RELEASE_TAG" --json body -q .body)
+          UPDATED_BODY="${RELEASE_BODY}\n\nAdd a pull command for the dyndns-server via reg.wehmoen.dev/github/dyndns-server:${RELEASE_TAG}"
+          echo -e "$UPDATED_BODY" > updated_description.txt
+          gh release edit "$RELEASE_TAG" --notes-file updated_description.txt
+
+      - name: Upload dist files to release
+        run: |
+          gh release upload "${{ github.ref_name }}" ./dist/*

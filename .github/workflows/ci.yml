@@ -99,7 +99,7 @@ jobs:
                 --tag $IMAGE_NAME:latest
           
               docker push $IMAGE_NAME:${{ github.sha }}
-              docker pull $IMAGE_NAME:latest
+              docker push $IMAGE_NAME:latest
               ;;
             release)
               docker build \
@@ -110,7 +110,6 @@ jobs:
           
               docker push $IMAGE_NAME:${{ github.event.release.tag_name }}
               docker push $IMAGE_NAME:${{ github.sha }}
-              docker pull $IMAGE_NAME:latest
               ;;
             pull_request)
               PR_ID=${{ github.event.pull_request.number }}

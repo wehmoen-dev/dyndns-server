@@ -96,7 +96,8 @@ jobs:
             push)
               docker build \
                 --tag $IMAGE_NAME:${{ github.sha }} \
-                --tag $IMAGE_NAME:latest
+                --tag $IMAGE_NAME:latest \
+                .
           
               docker push $IMAGE_NAME:${{ github.sha }}
               docker push $IMAGE_NAME:latest

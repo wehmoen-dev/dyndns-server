@@ -102,8 +102,8 @@ jobs:
             push)
               docker buildx build \
                 --platform linux/amd64 \
-                --tag $IMAGE_NAME:latest \
                 --tag $IMAGE_NAME:${{ github.sha }} \
+                --tag $IMAGE_NAME:latest \
                 --push .
               ;;
             release)
@@ -118,8 +118,8 @@ jobs:
               PR_ID=${{ github.event.pull_request.number }}
               docker buildx build \
                 --platform linux/amd64 \
-                --tag $IMAGE_NAME:pr-$PR_ID \
                 --tag $IMAGE_NAME:${{ github.sha }} \
+                --tag $IMAGE_NAME:pr-$PR_ID \
                 --push .
               ;;
           esac
@@ -143,7 +143,7 @@ jobs:
           
           echo "TRIGGERED BY: ${{ github.event_name }}"
           
-          echo $(docker buildx imagetools inspect $IMAGE_NAME)
+          echo $(docker image ls)
           
           echo "Using IMAGE_NAME=${IMAGE_NAME}"
           echo "Computed DIGEST=${DIGEST}"

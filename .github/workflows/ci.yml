@@ -142,16 +142,9 @@ jobs:
               PR_ID=${{ github.event.pull_request.number }}
               DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_NAME:pr-$PR_ID | cut -d'@' -f2)
               ;;
-          esac
-          
-          echo "TRIGGERED BY: ${{ github.event_name }}"
-          
-          echo $(docker image ls)
-          
-          echo "Using IMAGE_NAME=${IMAGE_NAME}"
-          echo "Computed DIGEST=${DIGEST}"
+          esac    
 
-#          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
 
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

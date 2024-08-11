@@ -68,10 +68,12 @@ $(DIST_DIR):
 
 # Build binaries for each target
 build-%: $(DIST_DIR)
-	GOARCH=$(shell echo $* | cut -d- -f2) \
 	GOOS=$(shell echo $* | cut -d- -f1) \
+	GOARCH=$(shell echo $* | cut -d- -f2) \
 	CGO_ENABLED=0 \
 	go build -o $(DIST_DIR)/$(SERVER_BIN)-$*$(if $(findstring windows,$*),.exe) $(SERVER_SRC)
+	GOOS=$(shell echo $* | cut -d- -f1) \
+	GOARCH=$(shell echo $* | cut -d- -f2) \
 	CGO_ENABLED=0 \
 	go build -o $(DIST_DIR)/$(CLIENT_BIN)-$*$(if $(findstring windows,$*),.exe) $(CLIENT_SRC)
 	@echo "Built $(DIST_DIR)/$(SERVER_BIN)-$*$(if $(findstring windows,$*),.exe) and $(DIST_DIR)/$(CLIENT_BIN)-$*$(if $(findstring windows,$*),.exe) for $*."

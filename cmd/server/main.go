@@ -134,7 +134,7 @@ func main() {
 			parsed := net.ParseIP(v4Address)
 
 			if parsed == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v4Address, "Invalid IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:-]: %s", c.RealIP(), "Invalid IP address")
 				result.V4.Error = errors.New("invalid IP address")
 			}
 
@@ -190,7 +190,7 @@ func main() {
 			parsed := net.ParseIP(v6Address)
 
 			if parsed == nil {
-				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:%s]: %s", c.RealIP(), v6Address, "Invalid IP address")
+				log.Printf("[DynDNS Server][From:%s][Status:Error][IP:-]: %s", c.RealIP(), "Invalid IP address")
 				result.V6.Error = errors.New("invalid IP address")
 			}
 

@@ -34,7 +34,7 @@ jobs:
 
       - name: Configure Docker to use Google Artifact Registry
         run: |
-          gcloud auth configure-docker europe-west3-docker.pkg.dev -quiet
+          gcloud auth configure-docker europe-west3-docker.pkg.dev
 
       - name: Build Docker image
         run: |

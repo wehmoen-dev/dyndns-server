@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,3 +37,4 @@ jobs:
       - name: Upload dist files to release
         run: |
           gh release upload "${{ github.ref_name }}" ./dist/*
+        

@@ -101,7 +101,7 @@ jobs:
           case "${{ github.event_name }}" in
             push)
               docker buildx build \
-                --platform linux/amd64,linux/arm64 \
+                --platform linux/amd64 \
                 --tag $IMAGE_NAME:latest \
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --push .
@@ -117,7 +117,7 @@ jobs:
             pull_request)
               PR_ID=${{ github.event.pull_request.number }}
               docker buildx build \
-                --platform linux/amd64,linux/arm64 \
+                --platform linux/amd64 \
                 --tag $IMAGE_NAME:pr-$PR_ID \
                 --tag $IMAGE_NAME:${{ github.sha }} \
                 --push .

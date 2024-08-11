@@ -106,3 +106,27 @@ You can also run the server without docker. You need to have Go installed on you
 Run the server: `./dyndns.(bin|exe) --bind-address="localhost:3000" --auth username:password --dns-zone-name my-dns-zone --domain-name home.mydomain.tld --project-id my-google-project`
 
 This will start the server on `localhost:3000` with basic auth and the provided Google Cloud credentials.
+
+## Client
+
+You can use the provided `dyndns-client` to update the DNS record. It is a simple Go program that sends a `GET` request to the server.
+
+### Build the client
+
+1. Clone this repository
+2. Build the client:
+
+   - Linux/Mac: `go build -o dyndns-client.bin cmd/client/main.go`
+   - Windows: `go build -o dyndns-client.exe cmd/client/main.go`
+
+### Run the client
+
+```shell
+./dyndns-client.(bin|exe) -- --server-url="https://my-dyndns-server.lan" --username=username --password=password --ip-provider=icanhazipcom
+```
+
+#### List of available IP providers
+
+```shell
+./dyndns-client.(bin|exe) --list-providers
+```

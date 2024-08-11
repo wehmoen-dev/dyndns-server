@@ -280,7 +280,6 @@ func main() {
 					result.V6.Error = errors.New("no IP address provided")
 				}
 			}
-
 		}
 
 		return c.JSON(http.StatusOK, result)

@@ -254,10 +254,11 @@ func main() {
 			result.V4 = v4Result
 			result.V4.Name = "" // Clear the domain name - its already in the parent struct
 			if v4Result.Success {
+				parsed := net.ParseIP(v4Address)
 				if v4Result.Created {
-					log.Printf("[DynDNS Server][Type:A][From:%s][Status:Created][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, v4Address, "DNS record created")
+					log.Printf("[DynDNS Server][Type:A][From:%s][Status:Created][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, parsed.String(), "DNS record created")
 				} else if v4Result.Updated {
-					log.Printf("[DynDNS Server][Type:A][From:%s][Status:Updated][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, v4Address, "DNS record updated")
+					log.Printf("[DynDNS Server][Type:A][From:%s][Status:Updated][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, parsed.String(), "DNS record updated")
 				}
 			} else {
 				if result.V4.Error == nil {
@@ -270,10 +271,11 @@ func main() {
 			result.V6 = v6Result
 			result.V6.Name = "" // Clear the domain name - its already in the parent struct
 			if v6Result.Success {
+				parsed := net.ParseIP(v6Address)
 				if v6Result.Created {
-					log.Printf("[DynDNS Server][Type:AAAA][From:%s][Status:Created][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, v6Address, "DNS record created")
+					log.Printf("[DynDNS Server][Type:AAAA][From:%s][Status:Created][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, parsed.String(), "DNS record created")
 				} else if v6Result.Updated {
-					log.Printf("[DynDNS Server][Type:AAAA][From:%s][Status:Updated][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, v6Address, "DNS record updated")
+					log.Printf("[DynDNS Server][Type:AAAA][From:%s][Status:Updated][Domain:%s][IP:%s]: %s", c.RealIP(), domainName, parsed.String(), "DNS record updated")
 				}
 			} else {
 				if result.V6.Error == nil {

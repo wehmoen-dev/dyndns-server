@@ -146,7 +146,7 @@ jobs:
           echo "Using IMAGE_NAME=${IMAGE_NAME}"
           echo "Computed DIGEST=${DIGEST}"
 
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
+#          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
 
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}

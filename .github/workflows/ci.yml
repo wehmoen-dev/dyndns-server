@@ -152,6 +152,16 @@ jobs:
           PR_ID=${{ github.event.pull_request.number }}
           IMAGE_NAME=reg.wehmoen.dev/github/dyndns-server
           WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          gh pr comment $PR_ID --body "*+New Docker image pushed**\n\n Pull: \`docker pull $IMAGE_NAME:${{ github.sha }}\` \n\n[View workflow run]($WORKFLOW_URL)"
+          
+          COMMENT_FILE=$(mktemp)
+          echo "**New Docker image pushed**" >> $COMMENT_FILE
+          echo "" >> $COMMENT_FILE
+          echo "Pull: \`docker pull $IMAGE_NAME:${{ github.sha }}\`" >> $COMMENT_FILE
+          echo "" >> $COMMENT_FILE
+          echo "[View workflow run]($WORKFLOW_URL)" >> $COMMENT_FILE
+          
+          gh pr comment $PR_ID --body-file $COMMENT_FILE
+          
+          rm $COMMENT_FILE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

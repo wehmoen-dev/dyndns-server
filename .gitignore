@@ -1,3 +1,4 @@
 .env
 google.json
 gha-creds-*.json
+dist

@@ -60,7 +60,7 @@ jobs:
       - name: Run dyndns-client --help
         run: ./dyndns-client --help
 
-  build-and-tag:
+  build-and-tag-server:
     runs-on: ubuntu-latest
     needs: [build-server, build-client]
 
@@ -157,6 +157,114 @@ jobs:
           echo "**New Docker image pushed**" >> $COMMENT_FILE
           echo "" >> $COMMENT_FILE
           echo "Pull: \`docker pull $IMAGE_NAME:${{ github.sha }}\`" >> $COMMENT_FILE
+          echo "" >> $COMMENT_FILE
+          echo "[View workflow run]($WORKFLOW_URL)" >> $COMMENT_FILE
+          
+          gh pr comment $PR_ID --body-file $COMMENT_FILE
+          
+          rm $COMMENT_FILE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-and-tag-server-client:
+    runs-on: ubuntu-latest
+    needs: [build-server, build-client]
+
+    if: github.event_name != 'workflow_dispatch'
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      pull-requests: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: reg.wehmoen.dev
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
+
+      - name: Build and tag Docker image
+        run: |
+          IMAGE_NAME=reg.wehmoen.dev/github/dyndns-client
+
+          case "${{ github.event_name }}" in
+            push)
+              docker build \
+                --tag $IMAGE_NAME:${{ github.sha }} \
+                --tag $IMAGE_NAME:latest \
+                --file Dockerfile.client \
+                .
+          
+              docker push $IMAGE_NAME:${{ github.sha }}
+              docker push $IMAGE_NAME:latest
+              ;;
+            release)
+              docker build \
+                --tag $IMAGE_NAME:latest \
+                --tag $IMAGE_NAME:${{ github.sha }} \
+                --tag $IMAGE_NAME:${{ github.event.release.tag_name }} \
+                --file Dockerfile.client \
+                .
+          
+              docker push $IMAGE_NAME:${{ github.event.release.tag_name }}
+              docker push $IMAGE_NAME:${{ github.sha }}
+              ;;
+            pull_request)
+              PR_ID=${{ github.event.pull_request.number }}
+              docker build \
+                --tag $IMAGE_NAME:${{ github.sha }} \
+                --tag $IMAGE_NAME:pr-$PR_ID \
+                --file Dockerfile.client \
+                .     
+              docker push $IMAGE_NAME:pr-$PR_ID
+              docker push $IMAGE_NAME:${{ github.sha }}
+              ;;
+          esac
+
+      - name: Get Docker image digest and sign image
+        run: |
+          IMAGE_NAME=reg.wehmoen.dev/github/dyndns-client
+
+          case "${{ github.event_name }}" in
+            push)
+              DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_NAME:latest | cut -d'@' -f2)
+              ;;
+            release)
+              DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_NAME:${{ github.event.release.tag_name }} | cut -d'@' -f2)
+              ;;
+            pull_request)
+              PR_ID=${{ github.event.pull_request.number }}
+              DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_NAME:pr-$PR_ID | cut -d'@' -f2)
+              ;;
+          esac    
+
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY $IMAGE_NAME@$DIGEST
+
+        env:
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+
+      - name: Post comment on PR with image pull command
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          PR_ID=${{ github.event.pull_request.number }}
+          IMAGE_NAME=reg.wehmoen.dev/github/dyndns-client
+          WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          COMMENT_FILE=$(mktemp)
+          echo "**New Docker image pushed**" >> $COMMENT_FILE
+          echo "" >> $COMMENT_FILE
+          echo "Pull Client: \`docker pull $IMAGE_NAME:${{ github.sha }}\`" >> $COMMENT_FILE
           echo "" >> $COMMENT_FILE
           echo "[View workflow run]($WORKFLOW_URL)" >> $COMMENT_FILE
           

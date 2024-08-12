@@ -1,0 +1,20 @@
+FROM golang:1.22-bookworm AS builder
+LABEL maintainer="Nico Wehmöller" \
+        org.label-schema.schema-version="1.0" \
+        org.label-schema.description="DynDNS Client to work with DynDNS Server" \
+        org.label-schema.name="dyndns"
+WORKDIR /build
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o dyndns-client.bin cmd/client/main.go
+
+FROM alpine:latest AS tls
+RUN  apk --no-cache add ca-certificates
+
+FROM scratch
+COPY --from=tls /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /build/dyndns-client.bin /dyndns-client.bin
+
+ENTRYPOINT ["/dyndns-client.bin"]

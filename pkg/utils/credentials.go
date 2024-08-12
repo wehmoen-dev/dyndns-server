@@ -3,6 +3,7 @@ package utils
 import (
 	"errors"
 	"os"
+	"strings"
 )
 
 var (
@@ -21,6 +22,10 @@ func FindCredentials(filename string) ([]byte, error) {
 
 	var path string
 	var found bool
+
+	if strings.HasPrefix(filename, "env://") {
+		return []byte(os.Getenv(filename[6:])), nil
+	}
 
 	var paths = []string{".", "..", "./credentials"}
 

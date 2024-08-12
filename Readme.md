@@ -30,16 +30,19 @@ Usage of /dyndns.bin:
 
 ### Parameters
 
-| Parameter     | Description                                                                    | Required                   |
-|---------------|--------------------------------------------------------------------------------|----------------------------|
-| auth          | Basic Auth username:password. Use format `username:password`                   | No                         |
-| auth-file     | Path to the Google Cloud credentials file                                      | No - default `google.json` |
-| bind-address  | Bind address for the server. Use format `ip:port`                              | No - default `:8080`       |
-| dns-zone-name | DNS zone name from Cloud DNS                                                   | Yes                        |
-| domain-name   | Domain name to update including the subdomain. For example `home.mydomain.tld` | Yes                        |
-| project-id    | Google Cloud project ID                                                        | Yes                        |
+| Parameter     | Description                                                                    | Required                                                      |
+|---------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
+| auth          | Basic Auth username:password. Use format `username:password`                   | No - default `env:DYNDNS_AUTH`                                 |
+| auth-file     | Path to the Google Cloud credentials file                                      | No - default `env:DYNDNS_AUTH_FILE => fallback to: google.json` |
+| bind-address  | Bind address for the server. Use format `ip:port`                              | No - default `:8080`                                          |
+| dns-zone-name | DNS zone name from Cloud DNS                                                   | Yes - default: `env:DYNDNS_DNS_ZONE_NAME`                     |
+| domain-name   | Domain name to update including the subdomain. For example `home.mydomain.tld` | Yes - default: `env:DYNDNS_DOMAIN_NAME`                       |
+| project-id    | Google Cloud project ID                                                        | Yes - default: `env:DYNDNS_PROJECT_ID`                        |
 
 *When using docker you should not change the `--bind-address` flag. The container will only expose port 8080.*
+
+You can load the `auth-file` from an env variable. Todo this set `--auth-file` to `env://YOUR_ENV_VAR_NAME` and
+set `YOUR_ENV_VAR_NAME` to the content of the file.
 
 ## Run the server
 
@@ -56,7 +59,7 @@ docker run -d --name dyndns \
 
 ## Update the DNS record
 
-This server supports updates of IPv4 and IPv6 addresses. The client can send a `GET` request to the server. 
+This server supports updates of IPv4 and IPv6 addresses. The client can send a `GET` request to the server.
 
 ```http
 GET https://my-dyndns-server.lan/dyn?ip_address=IP_V4_ADDRESS&ipv6_address=IP_V6_ADDRESS
@@ -68,21 +71,21 @@ The server will validate the provided IP addresses and create/update the DNS rec
 
 ```json
 {
-   "name": "home.mydomain.tld.",
-   "v4": {
-      "rr_type": "A",
-      "success": true,
-      "created": false,
-      "updated": true,
-      "value": "20.15.79.10"
-   },
-   "v6": {
-      "rr_type": "AAAA",
-      "success": true,
-      "created": false,
-      "updated": true,
-      "value": "2a05:3100:0000:572:cafe:f00a:af39:beef"
-   }
+  "name": "home.mydomain.tld.",
+  "v4": {
+    "rr_type": "A",
+    "success": true,
+    "created": false,
+    "updated": true,
+    "value": "20.15.79.10"
+  },
+  "v6": {
+    "rr_type": "AAAA",
+    "success": true,
+    "created": false,
+    "updated": true,
+    "value": "2a05:3100:0000:572:cafe:f00a:af39:beef"
+  }
 }
 
 ```
@@ -100,24 +103,26 @@ You can also run the server without docker. You need to have Go installed on you
 1. Clone this repository
 2. Build the server:
 
-   - Linux/Mac: `go build -o dyndns.bin cmd/server/main.go`
-   - Windows: `go build -o dyndns.exe cmd/server/main.go`
+    - Linux/Mac: `go build -o dyndns.bin cmd/server/main.go`
+    - Windows: `go build -o dyndns.exe cmd/server/main.go`
 
-Run the server: `./dyndns.(bin|exe) --bind-address="localhost:3000" --auth username:password --dns-zone-name my-dns-zone --domain-name home.mydomain.tld --project-id my-google-project`
+Run the
+server: `./dyndns.(bin|exe) --bind-address="localhost:3000" --auth username:password --dns-zone-name my-dns-zone --domain-name home.mydomain.tld --project-id my-google-project`
 
 This will start the server on `localhost:3000` with basic auth and the provided Google Cloud credentials.
 
 ## Client
 
-You can use the provided `dyndns-client` to update the DNS record. It is a simple Go program that sends a `GET` request to the server.
+You can use the provided `dyndns-client` to update the DNS record. It is a simple Go program that sends a `GET` request
+to the server.
 
 ### Build the client
 
 1. Clone this repository
 2. Build the client:
 
-   - Linux/Mac: `go build -o dyndns-client.bin cmd/client/main.go`
-   - Windows: `go build -o dyndns-client.exe cmd/client/main.go`
+    - Linux/Mac: `go build -o dyndns-client.bin cmd/client/main.go`
+    - Windows: `go build -o dyndns-client.exe cmd/client/main.go`
 
 ### Run the client
 

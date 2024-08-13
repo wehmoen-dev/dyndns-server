@@ -8,7 +8,7 @@ require (
 	github.com/go-resty/resty/v2 v2.14.0
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/labstack/echo/v4 v4.12.0
-	github.com/urfave/cli/v2 v2.27.3
+	github.com/urfave/cli/v2 v2.27.4
 	google.golang.org/api v0.191.0
 	google.golang.org/appengine v1.6.8
 )

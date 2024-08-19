@@ -26,6 +26,12 @@ jobs:
       - name: Build project
         run: make all
 
+      - name: Install GitHub CLI
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r .tag_name)
+          curl -sSL https://github.com/cli/cli/releases/download/${LATEST_VERSION}/gh_${LATEST_VERSION#v}_linux_amd64.tar.gz | tar -xz
+          cp gh_${LATEST_VERSION#v}_linux_amd64/bin/gh /usr/local/bin/
+
       - name: Update release description with gh
         run: |
           RELEASE_TAG=${{ github.ref_name }}

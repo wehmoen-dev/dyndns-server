@@ -9,12 +9,12 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/urfave/cli/v2 v2.27.4
-	google.golang.org/api v0.193.0
+	google.golang.org/api v0.194.0
 	google.golang.org/appengine v1.6.8
 )
 
 require (
-	cloud.google.com/go/auth v0.9.0 // indirect
+	cloud.google.com/go/auth v0.9.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
 	cloud.google.com/go/compute/metadata v0.5.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect

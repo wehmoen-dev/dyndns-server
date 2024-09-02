@@ -151,7 +151,7 @@ jobs:
         run: |
           LATEST_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r .tag_name)
           curl -sSL https://github.com/cli/cli/releases/download/${LATEST_VERSION}/gh_${LATEST_VERSION#v}_linux_amd64.tar.gz | tar -xz
-          cp gh_${LATEST_VERSION#v}_linux_amd64/bin/gh /usr/local/bin/
+          sudo cp gh_${LATEST_VERSION#v}_linux_amd64/bin/gh /usr/local/bin/
 
       - name: Post comment on PR with image pull command
         if: ${{ github.event_name == 'pull_request' }}
@@ -266,7 +266,7 @@ jobs:
         run: |
           LATEST_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r .tag_name)
           curl -sSL https://github.com/cli/cli/releases/download/${LATEST_VERSION}/gh_${LATEST_VERSION#v}_linux_amd64.tar.gz | tar -xz
-          cp gh_${LATEST_VERSION#v}_linux_amd64/bin/gh /usr/local/bin/
+          sudo cp gh_${LATEST_VERSION#v}_linux_amd64/bin/gh /usr/local/bin/
 
       - name: Post comment on PR with image pull command
         if: ${{ github.event_name == 'pull_request' }}

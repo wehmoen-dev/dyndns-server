@@ -14,7 +14,7 @@ on:
 jobs:
   build-server:
     runs-on:
-      group: "Default"
+      group: "enterprise/Default"
 
     permissions:
       contents: 'read'
@@ -39,7 +39,7 @@ jobs:
 
   build-client:
     runs-on:
-      group: "Default"
+      group: "enterprise/Default"
 
     permissions:
       contents: 'read'
@@ -64,7 +64,7 @@ jobs:
 
   build-and-tag-server:
     runs-on:
-      group: "Default"
+      group: "enterprise/Default"
     needs: [build-server, build-client]
 
     if: github.event_name != 'workflow_dispatch'
@@ -177,7 +177,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-and-tag-client:
     runs-on:
-      group: "Default"
+      group: "enterprise/Default"
     needs: [build-server, build-client]
 
     if: github.event_name != 'workflow_dispatch'

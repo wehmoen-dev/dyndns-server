@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.1
 
 require (
-	github.com/go-resty/resty/v2 v2.15.1
+	github.com/go-resty/resty/v2 v2.15.2
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/urfave/cli/v2 v2.27.4
